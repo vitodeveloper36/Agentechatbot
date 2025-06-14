@@ -1,0 +1,143 @@
+﻿@{
+    ViewData["Title"] = "Chat con Agente";
+    var agentName = TempData["agentName"] ?? "Usuario";
+    var sessionId = TempData["sessionId"] ?? Guid.NewGuid().ToString();
+}
+
+<!-- Tema CSS -->
+<link id="themeStylesheet" rel="stylesheet" href="" />
+
+<!-- ───── Contenedor del chat ───── -->
+<div id="chatContainer" class="chat-container container-fluid d-flex flex-column vh-100 p-0">
+    <!-- Header -->
+    <header class="chat-header bg-primary text-white p-3">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <div class="agent-avatar bg-white text-primary rounded-circle me-2 p-2">
+                    <i class="fa-solid fa-user-headset"></i>
+                </div>
+                <div>
+                    <h5 id="agentDisplayName" class="mb-0">@agentName</h5>
+                    <small id="connectionStatus" class="badge bg-danger">🔴 Desconectado</small>
+                </div>
+            </div>
+            <div>
+                <button id="themeToggleBtn" class="btn btn-light btn-sm me-1"><i class="fa-solid fa-moon"></i></button>
+                <button id="clearChat" class="btn btn-light btn-sm me-1"><i class="fa-solid fa-trash"></i></button>
+                <a href="@Url.Action("Welcome", "Chat")" class="btn btn-light btn-sm"><i class="fa-solid fa-right-from-bracket"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mensajes -->
+    <main id="chatMessages" class="chat-messages flex-grow-1 p-3 overflow-auto">
+        <!-- Mensaje inicial de bienvenida -->
+        <div class="message whatsapp-agent mb-3 d-flex">
+            <div>
+                <p>¡Hola @agentName! Soy tu asistente AI. ¿En qué puedo ayudarte hoy?</p>
+                <span class="message-time">Ahora</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Indicador de escritura -->
+    <div id="typingIndicator" class="d-flex align-items-center p-2" hidden>
+        <i class="fa-solid fa-ellipsis fa-2x text-muted"></i>
+    </div>
+
+    <!-- Entrada de mensaje -->
+    <footer class="chat-input bg-light p-3">
+        <div class="input-group">
+            <textarea id="messageInput" class="form-control" rows="1" placeholder="Escribe tu mensaje aquí…"></textarea>
+            <button id="sendBtn" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </footer>
+</div>
+
+<!-- Modal de ajustes -->
+<div id="settingsModal" class="settings-modal modal fade" tabindex="-1" aria-hidden="true" hidden>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajustes</h5>
+                <button id="closeModal" type="button" class="btn-close" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-3">
+                    <label for="nameInput" class="form-label">Nombre de agente</label>
+                    <input id="nameInput" type="text" class="form-control" value="@agentName" />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="themeSelect" class="form-label">Tema</label>
+                    <select id="themeSelect" class="form-select">
+                        <option value="dark">Oscuro</option>
+                        <option value="light">Claro</option>
+                    </select>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                    <input id="soundToggle" class="form-check-input" type="checkbox" role="switch" />
+                    <label for="soundToggle" class="form-check-label">Sonido</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveSettingsBtn" class="btn btn-primary w-100">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Variables de sesión para JavaScript -->
+<script>
+    // Almacenar los datos del usuario para el chat
+    const USER_DATA = {
+        name: "@agentName",
+        sessionId: "@sessionId"
+    };
+</script>
+
+<!-- Scripts para manejo de temas -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Función para establecer el tema
+        function setTheme(theme) {
+            const body = document.body;
+            const themeStylesheet = document.getElementById('themeStylesheet');
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+            if (theme === 'dark') {
+                body.classList.add('dark-theme');
+                body.classList.remove('light-theme');
+                themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+                themeStylesheet.href = '/css/dark-theme.css'; // Asegúrate de crear este archivo
+            } else {
+                body.classList.add('light-theme');
+                body.classList.remove('dark-theme');
+                themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+                themeStylesheet.href = '/css/light-theme.css'; // Asegúrate de crear este archivo
+            }
+
+            localStorage.setItem('preferred-theme', theme);
+        }
+
+        // Cargar tema preferido
+        const savedTheme = localStorage.getItem('preferred-theme') || 'light';
+        setTheme(savedTheme);
+
+        // Botón para cambiar tema
+        document.getElementById('themeToggleBtn').addEventListener('click', function() {
+            const currentTheme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
+
+        // Conectar el selector de temas en el modal
+        document.getElementById('themeSelect').value = savedTheme;
+        document.getElementById('themeSelect').addEventListener('change', function() {
+            setTheme(this.value);
+        });
+    });
+       
+</script>
+

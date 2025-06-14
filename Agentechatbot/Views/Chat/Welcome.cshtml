@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Bienvenido al Chat";
+}
+
+<!-- Tema CSS -->
+<link id="themeStylesheet" rel="stylesheet" href="" />
+
+<!-- ───── Pantalla de bienvenida ───── -->
+<div class="welcome-screen container-fluid">
+    <div class="welcome-container card shadow-lg">
+        <header class="welcome-header card-header text-center">
+            <div class="logo-container mb-3">
+                <div class="logo-avatar rounded-circle bg-primary text-white"><i class="fa-solid fa-robot fa-2x"></i></div>
+            </div>
+            <h1 class="display-5">¡Bienvenido!</h1>
+            <p class="lead">Ingresa tu nombre y Session ID para comenzar.</p>
+        </header>
+
+        <div class="welcome-form card-body">
+            <form id="welcomeForm" method="post" action="@Url.Action("Index", "Chat")">
+                <div class="form-group mb-3">
+                    <label for="agentName" class="form-label">Tu nombre</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                        <input id="agentName" name="agentName" type="text" class="form-control" placeholder="Ej: Víctor" required />
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="sessionId" class="form-label">Session ID</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+                        <input id="sessionId" name="sessionId" type="text" class="form-control" placeholder="Déjalo vacío para autogenerar" />
+                    </div>
+                </div>
+
+                <button type="submit" id="startChatBtn" class="start-chat-btn btn btn-primary w-100 py-2">
+                    Iniciar chat <i class="fa-solid fa-arrow-right-long ms-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts para manejo de temas -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Validar formulario
+        const agentNameInput = document.getElementById('agentName');
+        const startChatBtn = document.getElementById('startChatBtn');
+
+        agentNameInput.addEventListener('input', function() {
+            startChatBtn.disabled = agentNameInput.value.trim() === '';
+        });
+
+        // Inicialmente desactivar el botón si no hay nombre
+        startChatBtn.disabled = agentNameInput.value.trim() === '';
+
+        // Función para establecer el tema
+        function setTheme(theme) {
+            const body = document.body;
+            const themeStylesheet = document.getElementById('themeStylesheet');
+
+            if (theme === 'dark') {
+                body.classList.add('dark-theme');
+                body.classList.remove('light-theme');
+                themeStylesheet.href = '/css/dark-theme.css';
+            } else {
+                body.classList.add('light-theme');
+                body.classList.remove('dark-theme');
+                themeStylesheet.href = '/css/light-theme.css';
+            }
+
+            localStorage.setItem('preferred-theme', theme);
+        }
+
+        // Cargar tema preferido
+        const savedTheme = localStorage.getItem('preferred-theme') || 'light';
+        setTheme(savedTheme);
+    });
+</script>
