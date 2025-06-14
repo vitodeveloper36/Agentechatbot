@@ -23,6 +23,7 @@
     <!-- Estilos propios -->
     <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link id="themeStylesheet" rel="stylesheet" href="" />
 
     @RenderSection("Styles", required: false)
 </head>
@@ -78,17 +79,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
 
-    <!-- Lógica del chat -->
+    <!-- Scripts principales -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/agente.js" asp-append-version="true"></script>
-    
-    @await RenderSectionAsync("Scripts", required: false)
 
-    <script>
-        // Toggle claro/oscuro (demo)
-        document.getElementById('themeToggle')?.addEventListener('click', () => {
-            document.body.classList.toggle('bg-dark');       // fondo
-            document.body.classList.toggle('text-white');    // texto
-        });
-    </script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
