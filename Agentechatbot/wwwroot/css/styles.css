@@ -3,6 +3,10 @@ body {
     font-family: 'Inter', sans-serif;
     transition: all 0.3s ease;
 }
+/* Navbar con gradiente */
+.navbar.bg-primary {
+    background: linear-gradient(135deg, #4a7bff, #3d6fdb) !important;
+}
 
 /* === PANTALLA DE BIENVENIDA === */
 .welcome-screen {
@@ -178,7 +182,7 @@ button, a, .form-control, .form-select {
 body.dark-theme .form-control::placeholder {
     color: #6b7280;
 }
-/* Añade este CSS a uno de tus archivos de tema o a styles.css */
+/* AÃ±ade este CSS a uno de tus archivos de tema o a styles.css */
 .typing-dots {
     display: flex;
     align-items: center;

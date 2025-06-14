@@ -56,26 +56,7 @@
         // Inicialmente desactivar el botón si no hay nombre
         startChatBtn.disabled = agentNameInput.value.trim() === '';
 
-        // Función para establecer el tema
-        function setTheme(theme) {
-            const body = document.body;
-            const themeStylesheet = document.getElementById('themeStylesheet');
-
-            if (theme === 'dark') {
-                body.classList.add('dark-theme');
-                body.classList.remove('light-theme');
-                themeStylesheet.href = '/css/dark-theme.css';
-            } else {
-                body.classList.add('light-theme');
-                body.classList.remove('dark-theme');
-                themeStylesheet.href = '/css/light-theme.css';
-            }
-
-            localStorage.setItem('preferred-theme', theme);
-        }
-
-        // Cargar tema preferido
         const savedTheme = localStorage.getItem('preferred-theme') || 'light';
-        setTheme(savedTheme);
+        window.setTheme?.(savedTheme);
     });
 </script>

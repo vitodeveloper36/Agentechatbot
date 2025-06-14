@@ -100,44 +100,17 @@
 <!-- Scripts para manejo de temas -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Función para establecer el tema
-        function setTheme(theme) {
-            const body = document.body;
-            const themeStylesheet = document.getElementById('themeStylesheet');
-            const themeToggleBtn = document.getElementById('themeToggleBtn');
-
-            if (theme === 'dark') {
-                body.classList.add('dark-theme');
-                body.classList.remove('light-theme');
-                themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-                themeStylesheet.href = '/css/dark-theme.css'; // Asegúrate de crear este archivo
-            } else {
-                body.classList.add('light-theme');
-                body.classList.remove('dark-theme');
-                themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-                themeStylesheet.href = '/css/light-theme.css'; // Asegúrate de crear este archivo
-            }
-
-            localStorage.setItem('preferred-theme', theme);
-        }
-
-        // Cargar tema preferido
         const savedTheme = localStorage.getItem('preferred-theme') || 'light';
-        setTheme(savedTheme);
+        document.getElementById('themeSelect').value = savedTheme;
 
-        // Botón para cambiar tema
         document.getElementById('themeToggleBtn').addEventListener('click', function() {
             const currentTheme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            setTheme(newTheme);
+            window.setTheme?.(currentTheme === 'dark' ? 'light' : 'dark');
         });
 
-        // Conectar el selector de temas en el modal
-        document.getElementById('themeSelect').value = savedTheme;
         document.getElementById('themeSelect').addEventListener('change', function() {
-            setTheme(this.value);
+            window.setTheme?.(this.value);
         });
     });
-       
 </script>
 
